@@ -318,7 +318,7 @@ export const CourseManagement = () => {
                           }
                           size="sm"
                         >
-                          <Link to={`/courses/${course.id}`}>
+                          <Link to={`/instructor/courses/${course.id}`}>
                             <Eye size={14} className="mr-1" />
                             {course.status === "published" ? "View" : "Preview"}
                           </Link>
