@@ -9,8 +9,11 @@ export const Button = ({
   className,
   isLoading = false,
   icon,
+  asChild = false,
   ...props
 }) => {
+  const Comp = asChild ? 'span' : 'button'; // span will wrap Link
+
   const sizeClasses = {
     sm: 'h-8 px-3 text-xs',
     default: 'h-10 px-4 text-sm',
@@ -27,16 +30,16 @@ export const Button = ({
   };
 
   return (
-    <button
+    <Comp
       className={cn(
-        'btn',
+        'btn inline-flex items-center',
         variantClasses[variant] || variantClasses['primary'],
         sizeClasses[size] || sizeClasses['default'],
         isLoading && 'opacity-70 cursor-wait',
         className
       )}
-      disabled={isLoading || props.disabled}
-      {...props}
+      disabled={!asChild && (isLoading || props.disabled)} // don't apply disabled if rendering custom element
+      {...(!asChild ? props : {})} // avoid passing invalid props to span
     >
       {isLoading && (
         <span className="mr-2 animate-spin">
@@ -64,7 +67,7 @@ export const Button = ({
       )}
       {icon && !isLoading && <span className="mr-2">{icon}</span>}
       {children}
-    </button>
+    </Comp>
   );
 };
 
@@ -76,4 +79,5 @@ Button.propTypes = {
   isLoading: PropTypes.bool,
   disabled: PropTypes.bool,
   icon: PropTypes.node,
+  asChild: PropTypes.bool,
 };
